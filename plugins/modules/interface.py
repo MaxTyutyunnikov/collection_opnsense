@@ -7,34 +7,26 @@
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import (
-    module_dependency_error,
-    MODULE_EXCEPTIONS,
-)
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+    module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.utils import (
-        profiler,
-    )
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import (
-        diff_remove_empty,
-    )
+#    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.utils import profiler
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import diff_remove_empty
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import (
         OPN_MOD_ARGS,
         STATE_ONLY_MOD_ARG,
         RELOAD_MOD_ARG,
     )
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface import (
-        Interface,
-    )
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface import Interface
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
-PROFILE = False  # create log to profile time consumption
 
-DOCUMENTATION = "https://opnsense.ansibleguy.net/en/latest/modules/interface.html"
-EXAMPLES = "https://opnsense.ansibleguy.net/en/latest/modules/interface.html"
+# DOCUMENTATION = 'https://opnsense.ansibleguy.net/en/latest/modules/interface.html'
+# EXAMPLES = 'https://opnsense.ansibleguy.net/en/latest/modules/interface.html'
 
 
 def run_module():
@@ -105,9 +97,9 @@ def run_module():
     result = dict(
         changed=False,
         diff={
-            "before": {},
-            "after": {},
-        },
+            'before': {},
+            'after': {},
+        }
     )
 
     module = AnsibleModule(
@@ -115,23 +107,29 @@ def run_module():
         supports_check_mode=True,
     )
 
-    interface = Interface(module=module, result=result)
+#    interface = Interface(module=module, result=result)
 
-    def process():
-        interface.check()
-        interface.process()
-        if result["changed"] and module.params["reload"]:
-            interface.reload()
+#    def process():
+#        interface.check()
+#        interface.process()
+#        if result["changed"] and module.params["reload"]:
+#            interface.reload()
+#
+#    if module.params['profiling'] or module.params['debug']:
+#        profiler(
+#            check=process, kwargs=dict(
+#                m=module, p=module.params, r=result,
+#            ),
+#            log_file='interface.log'
+#        )
+#
+#    else:
+#        process()
+#
+#    interface.s.close()
+    module_wrapper(Interface(module=module, result=result))
 
-    if PROFILE or module.params["debug"]:
-        profiler(check=process, log_file="interface.log")
-        # log in /tmp/ansibleguy.opnsense/
-
-    else:
-        process()
-
-    interface.s.close()
-    result["diff"] = diff_remove_empty(result["diff"])
+    result['diff'] = diff_remove_empty(result['diff'])
     module.exit_json(**result)
 
 
@@ -139,5 +137,5 @@ def main():
     run_module()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
