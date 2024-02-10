@@ -86,7 +86,7 @@ class Interface(BaseModule):
         if self.p['state'] == 'present':
             if is_unset(self.p['interface']):
                 self.m.fail_json(
-                    'You need to provide an 'interface' to assign a device!'
+                    'You need to provide an "interface" to assign a device!'
                 )
 
             validate_int_fields(
@@ -96,13 +96,13 @@ class Interface(BaseModule):
             if self.p['type4'] == 'static':
                 if not is_ip4(self.p['ip4']):
                     self.m.fail_json(
-                        f'IPv4 '{self.p['ip4']}' is not a valid IPv4-address!'
+                        f"IPv4 '{self.p['ip4']}' is not a valid IPv4-address!"
                     )
 
             if self.p['type6'] == 'static':
                 if not is_ip6(self.p['ip6']):
                     self.m.fail_json(
-                        f'IPv6 '{self.p['ip6']}' is not a valid IPv6-address!'
+                        f"IPv6 '{self.p['ip6']}' is not a valid IPv6-address!"
                     )
 
         self._base_check()

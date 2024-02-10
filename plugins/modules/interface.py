@@ -19,6 +19,7 @@ try:
         STATE_ONLY_MOD_ARG,
         RELOAD_MOD_ARG,
     )
+
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface import Interface
 
 except MODULE_EXCEPTIONS:

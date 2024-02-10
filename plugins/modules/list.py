@@ -156,6 +156,11 @@ def run_module():
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_vlan import \
                 Vlan as Target_Obj
 
+        elif target == "interface":
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface import (
+                Interface as Target_Obj,
+            )
+
         elif target == 'interface_vxlan':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_vxlan import \
                 Vxlan as Target_Obj
